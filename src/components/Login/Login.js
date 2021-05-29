@@ -3,10 +3,11 @@ import './Login.css';
 import PropTypes from 'prop-types';
 
 async function loginUser(credentials) {
-    return fetch('http://localhost:8080/login', {
+    return fetch('http://localhost:8080/rent-a-car/login', {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
         },
         body: JSON.stringify(credentials)
     })
@@ -14,13 +15,13 @@ async function loginUser(credentials) {
 }
 
 export default function Login({ setToken }) {
-    const [username, setUserName] = useState();
+    const [email, setEmail] = useState();
     const [password, setPassword] = useState();
 
     const handleSubmit = async e => {
         e.preventDefault();
         const token = await loginUser({
-            username,
+            email,
             password
         });
         setToken(token);
@@ -31,8 +32,8 @@ export default function Login({ setToken }) {
             <h1>Please Log In</h1>
         <form onSubmit={handleSubmit}>
             <label>
-                <p>Username</p>
-            <input type="text" onChange={e => setUserName(e.target.value)}/>
+                <p>Email</p>
+            <input type="text" onChange={e => setEmail(e.target.value)}/>
             </label>
             <label>
             <p>Password</p>
