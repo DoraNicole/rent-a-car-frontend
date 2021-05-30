@@ -54,8 +54,11 @@ export default function CarList() {
 
     const handleReserveCar = (car: any) =>
     {
-        alert("Car is reserved");
         console.log(car);
+        setDate1("");
+        setDate2("");
+        setCarLocation("");
+        setSelectedCar({brand: "", model: "", code: "", pricePerDay: 0, location: ""});
         setOrder({
             carId: car.id,
             pickUpDate: date1, 
@@ -75,7 +78,24 @@ export default function CarList() {
             body: JSON.stringify(order)
         })
         .then(data=>data.text())
-        .then(text=>console.log(text))
+        async function postOrder(order: any) {
+            return fetch('http://localhost:8080/rent-a-car/addOrder', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(order)
+            })
+            .then(data=>data.text())
+            .then(text=>{
+                if(text === "Saved") {
+                    alert("Car is reserved");
+                } else {
+                    alert("There has been an error! Retry reserving!");
+                }
+                console.log(text)
+            })
+        }
     }
 
     return (
@@ -83,16 +103,17 @@ export default function CarList() {
             <Grid item>
                 <Typography style={{width: "80%", margin: "auto", fontWeight: "bold"}}>Preferinte</Typography>
             </Grid>
+            <br/>
             <Grid item>
                 <Paper elevation={3} variant="outlined" style={{width: "80%", margin: "auto"}}>
                     <Typography>Data preluare masina : </Typography>
-                    <TextField InputProps={{inputProps: {min: minDate1}}} onChange={(e)=>setDate1(e.target.value)} type="date"/>
+                    <TextField InputProps={{inputProps: {min: minDate1}}} onChange={(e)=>setDate1(e.target.value)} value={date1} type="date"/>
                 </Paper>
             </Grid>
             <Grid item>
                 <Paper elevation={3} variant="outlined" style={{width: "80%", margin: "auto"}}>
                     <Typography>Data returnare masina : </Typography>
-                    <TextField InputProps={{inputProps: {min: minDate2}}} onChange={(e)=>setDate2(e.target.value)} type="date" />
+                    <TextField InputProps={{inputProps: {min: minDate2}}} onChange={(e)=>setDate2(e.target.value)} value={date2} type="date" />
                 </Paper>
             </Grid>
             <Grid item>
@@ -109,6 +130,7 @@ export default function CarList() {
             <Grid item>
                 <Typography style={{width: "80%", margin: "auto", fontWeight: "bold"}}>Selectie</Typography>
             </Grid>
+            <br/>
             <Grid item>
                 <Paper elevation={3} variant="outlined" style={{width: "80%", margin: "auto"}}>
                     <Typography>Masina selectata : {selectedCar.brand}-{selectedCar.model}-{selectedCar.code}</Typography>
@@ -121,6 +143,13 @@ export default function CarList() {
             <Grid item>
                 <Typography style={{width: "80%", margin: "auto", fontWeight: "bold"}}>Lista masini disponibile</Typography>
             </Grid>
+            {carList.filter((car : any) => (car.location === carLocation) && (car.available)).length === 0 && 
+                <Grid item>
+                    <Paper elevation={3} variant="outlined" style={{width: "80%", margin: "auto"}}>
+                        <Typography>Nicio masina nu este disponibila</Typography>
+                    </Paper>
+                </Grid>
+            }
             {carList.filter((car : any) => (car.location === carLocation) && (car.available)).map((car: any) => (
                 <Grid item>
                     <Paper elevation={3} variant="outlined" style={{width: "80%", margin: "auto"}}>
