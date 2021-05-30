@@ -15,9 +15,7 @@ import { Avatar, ListItemAvatar } from '@material-ui/core';
 import WarningIcon from '@material-ui/icons/Warning';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import SnackBar from '@material-ui/core/Snackbar';
-
+import CheckIcon from '@material-ui/icons/Check';
 
 export default function HomePage() {
     const [changePage, setChangePage] = useState(false);
@@ -32,46 +30,21 @@ export default function HomePage() {
         setIsAccountDialogOpen(false);
     }
 
-    const handleAppMenuClose = () =>
-    {
-        setIsAppMenuOpen(false);
-    }
-
-    const handleAppMenuClick = (event: React.MouseEvent<HTMLButtonElement>) =>
-    {
-        setAnchorElement(event.currentTarget);
-        setIsAppMenuOpen(true);
-    }
-
-    const handlePageChange = (event: React.MouseEvent<HTMLLIElement>) =>
-    {
-        if (isUserLoggedIn === true)
-        {
-            setCurrentPage(event.currentTarget.innerText);
-        }
-        else
-        {
-            setChangePage(true);
-        }
-        handleAppMenuClose();
-    }
-
     return (
         <div style={{flexGrow: 1}}>
             <AppBar position='static'>
                 <ToolBar>
-                    <IconButton edge="start" onClick={handleAppMenuClick}>
+                    <IconButton edge="start">
                         <MenuIcon/>
                     </IconButton>
                     <Typography variant="h6" style={{flexGrow: 1}}>Rent-a-Car</Typography>
                     <Typography variant="h6" style={{flexGrow: 1}}>{currentPage}</Typography>
-                    <CircularProgress variant="determinate" value={10} color="inherit"/>
                     <IconButton edge="start" onClick={()=>setIsAccountDialogOpen(true)}>
                         <AccountCircle/>
                     </IconButton>
                 </ToolBar>
             </AppBar>
-            <Dialog onClose={handleAccountDialogClose} open={isAccountDialogOpen}>
+            <Dialog onClose={()=>setIsAccountDialogOpen(false)} open={isAccountDialogOpen}>
                 <DialogTitle>Account</DialogTitle>
                 <List>
                     <ListItem button>
@@ -84,22 +57,20 @@ export default function HomePage() {
                 <Divider/>
                 <List>
                     <ListItem>
-                        <ListItemAvatar>
+                        {!localStorage.getItem("token") && <ListItemAvatar>
                             <Avatar>
                                 <WarningIcon/>
                             </Avatar>
-                        </ListItemAvatar>
-                        <ListItemText primary="You are not logged in"/>   
+                        </ListItemAvatar>}
+                        {localStorage.getItem("token") && <ListItemAvatar>
+                            <Avatar>
+                                <CheckIcon/>
+                            </Avatar>
+                        </ListItemAvatar>}
+                        <ListItemText primary={localStorage.getItem("token") ? "You are logged in" : "You are not logged in"}></ListItemText>
                     </ListItem>
                 </List>
             </Dialog>
-            <Menu anchorEl={anchorElement} open={isAppMenuOpen} onClose={handleAppMenuClose}>
-                <MenuItem onClick={(e)=>handlePageChange(e)}>Page 1</MenuItem>
-                <MenuItem onClick={(e)=>handlePageChange(e)}>Page 2</MenuItem>
-                <MenuItem onClick={(e)=>handlePageChange(e)}>Page 3</MenuItem>
-                <MenuItem onClick={(e)=>handlePageChange(e)}>Page 4</MenuItem>
-            </Menu>
-            {changePage && <SnackBar open={true} autoHideDuration={2000} />}
         </div>
     );
 }
