@@ -13,21 +13,18 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Divider from '@material-ui/core/Divider';
 import { Avatar, ListItemAvatar } from '@material-ui/core';
 import WarningIcon from '@material-ui/icons/Warning';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
 import CheckIcon from '@material-ui/icons/Check';
 
 export default function HomePage() {
-    const [changePage, setChangePage] = useState(false);
     const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
     const [isAccountDialogOpen, setIsAccountDialogOpen] = useState(false);
-    const [isAppMenuOpen, setIsAppMenuOpen] = useState(false);
-    const [anchorElement, setAnchorElement] = React.useState<null | HTMLElement>(null);
     const [currentPage, setCurrentPage] = useState("All cars list");
 
-    const handleAccountDialogClose = () =>
+    const handleLogout = () =>
     {
-        setIsAccountDialogOpen(false);
+        localStorage.removeItem("token");
+        setIsUserLoggedIn(false);
+        window.location.reload();
     }
 
     return (
@@ -47,11 +44,8 @@ export default function HomePage() {
             <Dialog onClose={()=>setIsAccountDialogOpen(false)} open={isAccountDialogOpen}>
                 <DialogTitle>Account</DialogTitle>
                 <List>
-                    <ListItem button>
-                        <ListItemText primary="Log in"/>   
-                    </ListItem>
-                    <ListItem button>
-                        <ListItemText primary="Sign in"/>   
+                    <ListItem button onClick={()=>handleLogout()}>
+                        <ListItemText primary="Log out"/>   
                     </ListItem>
                 </List>
                 <Divider/>
