@@ -10,9 +10,7 @@ async function registerUser(data) {
     })
         .then(data=>data.text())
         .then(text=>{
-            if(text !== "user created") {
-                alert(text)
-            }
+            alert(text)
             console.log(text)
         })
 }

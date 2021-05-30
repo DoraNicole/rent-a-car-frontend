@@ -55,8 +55,9 @@ export default function CarList() {
     const handleReserveCar = (car: any) =>
     {
         alert("Car is reserved");
+        console.log(car);
         setOrder({
-            carId: car.Id, 
+            carId: car.id,
             pickUpDate: date1, 
             returnDate: date2, 
             price: (new Date(date2).getTime()-new Date(date1).getTime())/(1000*3600*24) * (selectedCar.pricePerDay),
