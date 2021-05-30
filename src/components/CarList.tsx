@@ -9,6 +9,7 @@ export default function CarList() {
 
     const [carList, setCarList] = useState([]);
     const [selectedCar, setSelectedCar] = useState({brand: "", model: "", code: "", pricePerDay: 0});
+    const [order, setOrder] = useState({});
     const [date1, setDate1] = useState("");
     const [date2, setDate2] = useState("");
 
@@ -48,6 +49,24 @@ export default function CarList() {
         setSelectedCar(car);
     }
 
+    const handleReserveCar = (car: any) =>
+    {
+        alert("Car is reserved");
+        setOrder({carId: car.Id, pickUpDate: date1, returnDate: date2, price: (new Date(date2).getTime()-new Date(date1).getTime())/(1000*3600*24) * (selectedCar.pricePerDay)})
+    }
+
+    async function postOrder(order: any) {
+        return fetch('http://localhost:8080/rent-a-car/addOrder', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(order)
+        })
+        .then(data=>data.text())
+        .then(text=>console.log(text))
+    }
+
     return (
         <Grid container direction="column">
             <Grid item>
@@ -67,7 +86,7 @@ export default function CarList() {
                     <Typography>Masina selectata : {selectedCar.brand}-{selectedCar.model}-{selectedCar.code}</Typography>
                     <Typography>Numar zile : {(new Date(date2).getTime()-new Date(date1).getTime())/(1000*3600*24)}</Typography>
                     <Typography>Pret total (RON) : {(new Date(date2).getTime()-new Date(date1).getTime())/(1000*3600*24) * (selectedCar.pricePerDay)}</Typography>
-                    <Button variant="contained" color="primary" onClick={()=>{alert("Car is reserved")}}>Reserve car</Button>
+                    <Button variant="contained" color="primary" onClick={()=>{handleReserveCar(selectedCar)}}>Reserve car</Button>
                 </Paper>
             </Grid>
             {carList.map((car: any) => (
