@@ -1,4 +1,6 @@
 import React, {useState} from 'react';
+import {TextField} from "@material-ui/core";
+import Button from "@material-ui/core/Button";
 
 async function registerUser(data) {
     return fetch('http://localhost:8080/rent-a-car/register', {
@@ -9,7 +11,10 @@ async function registerUser(data) {
         body: JSON.stringify(data)
     })
         .then(data=>data.text())
-        .then(text=>console.log(text))
+        .then(text=>{
+            alert(text)
+            console.log(text)
+        })
 }
 
 export default function Register() {
@@ -34,26 +39,27 @@ export default function Register() {
             <form onSubmit={handleSubmit}>
                 <label>
                     <p>First Name</p>
-                    <input type="text" required={true} onChange={e => setFirstName(e.target.value)}/>
+                    <TextField variant="outlined" color="primary" required={true} onChange={e => setFirstName(e.target.value)}/>
                 </label>
                 <label>
                     <p>Last Name</p>
-                    <input type="text" required={true} onChange={e => setLastName(e.target.value)}/>
+                    <TextField variant="outlined" color="primary" required={true} onChange={e => setLastName(e.target.value)}/>
                 </label>
                 <label>
                     <p>Email</p>
-                    <input type="text" required={true} onChange={e => setEmail(e.target.value)}/>
+                    <TextField variant="outlined" color="primary" required={true} onChange={e => setEmail(e.target.value)}/>
                 </label>
                 <label>
                     <p>Password</p>
-                    <input type="password" required={true} onChange={e => setPassword(e.target.value)}/>
+                    <TextField variant="outlined" color="primary" type="password" required={true} onChange={e => setPassword(e.target.value)}/>
                 </label>
                 <label>
                     <p>Phone</p>
-                    <input type="text" required={true} onChange={e => setPhone(e.target.value)}/>
+                    <TextField variant="outlined" color="primary" required={true} onChange={e => setPhone(e.target.value)}/>
                 </label>
                 <div>
-                    <button type="submit">Submit</button>
+                    <br></br>
+                    <Button variant="contained" color="primary" type="submit">Submit</Button>
                 </div>
             </form>
         </div>

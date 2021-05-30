@@ -1,6 +1,5 @@
 import './App.css';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import Preferences from './components/Preferences/Preferences';
 import Login from "./components/Login/Login";
 import useToken from './useToken';
 import Register from "./components/Register/Register";
@@ -24,9 +23,6 @@ function App() {
                             <br/>
                             <CarList/>
                         </div>
-                    </Route>
-                    <Route path="/preferences">
-                        <Preferences />
                     </Route>
                     <Route path="/register">
                         <Register />

@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
 import {useHistory} from "react-router";
 import Register from "../Register/Register";
+import {TextField} from "@material-ui/core";
+import Button from "@material-ui/core/Button";
 
 async function loginUser(credentials) {
     return fetch('http://localhost:8080/rent-a-car/login', {
@@ -44,17 +46,20 @@ export default function Login({ setToken }) {
                 <form onSubmit={handleSubmit}>
                     <label>
                         <p>Email</p>
-                        <input type="text" onChange={e => setEmail(e.target.value)}/>
+                        <TextField variant="outlined" color="primary" onChange={e => setEmail(e.target.value)}/>
                     </label>
                     <label>
                         <p>Password</p>
-                        <input type="password" onChange={e => setPassword(e.target.value)}/>
+                        <TextField variant="outlined" color="primary" type="password" onChange={e => setPassword(e.target.value)}/>
                     </label>
+
                     <div>
-                        <button type="submit">Submit</button>
+                        <br></br>
+                        <Button variant="contained" color="primary" type="submit">Submit</Button>
                     </div>
                 </form>
-                <button type="button" onClick={handleRegister}>Create account</button>
+                <br></br>
+                <Button variant="contained" color="secondary" type="button" onClick={handleRegister}>Create account</Button>
             </div>}
 
             {register === "register" && <Register />}
