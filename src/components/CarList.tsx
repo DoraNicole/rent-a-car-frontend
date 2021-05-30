@@ -4,14 +4,17 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
 
 export default function CarList() {
 
     const [carList, setCarList] = useState([]);
-    const [selectedCar, setSelectedCar] = useState({brand: "", model: "", code: "", pricePerDay: 0});
+    const [selectedCar, setSelectedCar] = useState({brand: "", model: "", code: "", pricePerDay: 0, location: ""});
     const [order, setOrder] = useState({});
     const [date1, setDate1] = useState("");
     const [date2, setDate2] = useState("");
+    const [carLocation, setCarLocation] = useState("");
 
     const today = new Date();
     const tomorrow = new Date(today);
@@ -52,7 +55,14 @@ export default function CarList() {
     const handleReserveCar = (car: any) =>
     {
         alert("Car is reserved");
-        setOrder({carId: car.Id, pickUpDate: date1, returnDate: date2, price: (new Date(date2).getTime()-new Date(date1).getTime())/(1000*3600*24) * (selectedCar.pricePerDay)})
+        setOrder({
+            carId: car.Id, 
+            pickUpDate: date1, 
+            returnDate: date2, 
+            price: (new Date(date2).getTime()-new Date(date1).getTime())/(1000*3600*24) * (selectedCar.pricePerDay),
+            location: selectedCar.location
+        })
+        postOrder(order);
     }
 
     async function postOrder(order: any) {
@@ -83,10 +93,20 @@ export default function CarList() {
             </Grid>
             <Grid item>
                 <Paper elevation={3} variant="outlined" style={{width: "80%", margin: "auto"}}>
+                    <Typography>Locatie masina : </Typography>
+                    <Select value={carLocation} onChange={(e)=>setCarLocation(e.target.value as string)}>
+                        <MenuItem value="Bucuresti Otopeni aeroport">Bucuresti Otopeni aeroport</MenuItem>
+                    </Select>
+                </Paper>
+            </Grid>
+            <br/>
+            <Grid item>
+                <Paper elevation={3} variant="outlined" style={{width: "80%", margin: "auto"}}>
                     <Typography>Masina selectata : {selectedCar.brand}-{selectedCar.model}-{selectedCar.code}</Typography>
                     <Typography>Numar zile : {(new Date(date2).getTime()-new Date(date1).getTime())/(1000*3600*24)}</Typography>
                     <Typography>Pret total (RON) : {(new Date(date2).getTime()-new Date(date1).getTime())/(1000*3600*24) * (selectedCar.pricePerDay)}</Typography>
-                    <Button variant="contained" color="primary" onClick={()=>{handleReserveCar(selectedCar)}}>Reserve car</Button>
+                    <Typography>Locatie masina : {selectedCar.location}</Typography>
+                    <Button disabled={!date1 || !date2 || !selectedCar} variant="contained" color="primary" onClick={()=>{handleReserveCar(selectedCar)}}>Reserve car</Button>
                 </Paper>
             </Grid>
             {carList.map((car: any) => (
