@@ -9,7 +9,12 @@ async function registerUser(data) {
         body: JSON.stringify(data)
     })
         .then(data=>data.text())
-        .then(text=>console.log(text))
+        .then(text=>{
+            if(text !== "user created") {
+                alert(text)
+            }
+            console.log(text)
+        })
 }
 
 export default function Register() {
