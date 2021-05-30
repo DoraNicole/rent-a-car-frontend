@@ -120,7 +120,7 @@ export default function CarList() {
             <Grid item>
                 <Typography style={{width: "80%", margin: "auto", fontWeight: "bold"}}>Lista masini disponibile</Typography>
             </Grid>
-            {carList.filter((car : any) => car.location === carLocation).map((car: any) => (
+            {carList.filter((car : any) => (car.location === carLocation) && (car.available)).map((car: any) => (
                 <Grid item>
                     <Paper elevation={3} variant="outlined" style={{width: "80%", margin: "auto"}}>
                         <Typography>Marca : {car.brand}</Typography>
