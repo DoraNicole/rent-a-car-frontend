@@ -1,10 +1,11 @@
 import './App.css';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import Dashboard from './components/Dashboard/Dashboard';
 import Preferences from './components/Preferences/Preferences';
 import Login from "./components/Login/Login";
 import useToken from './useToken';
 import Register from "./components/Register/Register";
+import HomePage from './components/HomePage';
+import CarList from './components/CarList';
 
 function App() {
     const { token, setToken } = useToken();
@@ -17,8 +18,12 @@ function App() {
         <div className="wrapper">
             <BrowserRouter>
                 <Switch>
-                    <Route path="/dashboard">
-                        <Dashboard />
+                    <Route path="/">
+                        <div style={{display: 'flex', flexDirection: 'column'}}>
+                            <HomePage/>
+                            <br/>
+                            <CarList/>
+                        </div>
                     </Route>
                     <Route path="/preferences">
                         <Preferences />
