@@ -23,15 +23,16 @@ export default function Register() {
     const [firstName, setFirstName] = useState();
     const [lastName, setLastName] = useState();
     const [phone, setPhone] = useState();
-    const handleSubmit = async e => {
+    const handleSubmit = (e) => {
         e.preventDefault();
-        const token = await registerUser({
+        const token = registerUser({
             email,
             password,
             firstName,
             lastName,
             phone
         });
+        window.location.reload();
     }
     return(
         <div className="register-wrapper">
